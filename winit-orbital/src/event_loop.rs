@@ -132,6 +132,15 @@ fn convert_scancode(scancode: u8) -> (PhysicalKey, Option<NamedKey>) {
     (PhysicalKey::Code(key_code), named_key_opt)
 }
 
+pub fn scancode_to_physicalkey(scancode: u32) -> PhysicalKey {
+    convert_scancode(scancode.try_into().unwrap_or_default()).0
+}
+
+pub fn physicalkey_to_scancode(physical_key: PhysicalKey) -> Option<u32> {
+    // TODO
+    None
+}
+
 fn element_state(pressed: bool) -> event::ElementState {
     if pressed { event::ElementState::Pressed } else { event::ElementState::Released }
 }

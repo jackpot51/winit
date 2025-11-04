@@ -5,7 +5,10 @@
 
 use std::{fmt, str};
 
-pub use self::event_loop::{EventLoop, PlatformSpecificEventLoopAttributes};
+pub use self::event_loop::{
+    EventLoop, PlatformSpecificEventLoopAttributes, physicalkey_to_scancode,
+    scancode_to_physicalkey,
+};
 
 macro_rules! os_error {
     ($error:expr) => {{ winit_core::error::OsError::new(line!(), file!(), $error) }};
