@@ -289,6 +289,7 @@ impl AsRawFd for EventLoop {
     android_platform,
     x11_platform,
     wayland_platform,
+    orbital_platform,
     docsrs,
 ))]
 impl winit_core::event_loop::pump_events::EventLoopExtPumpEvents for EventLoop {
