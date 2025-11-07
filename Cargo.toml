@@ -57,7 +57,8 @@ rustdoc-args = ["--cfg", "docsrs"]
 
 # Features are documented in either `lib.rs` or under `winit::platform`.
 [features]
-default = ["rwh_06", "x11", "wayland", "wayland-dlopen", "wayland-csd-adwaita"]
+default = ["rwh_06", "wayland", "wayland-csd-adwaita"]
+orbital = ["orbclient", "redox_syscall"]
 x11 = ["x11-dl", "bytemuck", "percent-encoding", "xkbcommon-dl/x11", "x11rb"]
 wayland = [
     "wayland-client",
@@ -106,10 +107,7 @@ winit = { path = ".", features = ["rwh_05"] }
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dev-dependencies]
 softbuffer = { version = "0.4.0", default-features = false, features = [
-    "x11",
-    "x11-dlopen",
     "wayland",
-    "wayland-dlopen",
 ] }
 
 [target.'cfg(target_os = "android")'.dependencies]
@@ -251,7 +249,7 @@ features = [
     "Win32_UI_WindowsAndMessaging",
 ]
 
-[target.'cfg(all(unix, not(any(target_os = "redox", target_family = "wasm", target_os = "android", target_os = "ios", target_os = "macos"))))'.dependencies]
+[target.'cfg(all(unix, not(any(target_family = "wasm", target_os = "android", target_os = "ios", target_os = "macos"))))'.dependencies]
 ahash = { version = "0.8.7", features = ["no-rng"], optional = true }
 bytemuck = { version = "1.13.1", default-features = false, optional = true }
 calloop = "0.13.0"
@@ -290,8 +288,8 @@ x11rb = { version = "0.13.0", default-features = false, features = [
 xkbcommon-dl = "0.4.2"
 
 [target.'cfg(target_os = "redox")'.dependencies]
-orbclient = { version = "0.3.47", default-features = false }
-redox_syscall = "0.4.1"
+orbclient = { version = "0.3.47", default-features = false, optional = true }
+redox_syscall = { version = "0.4.1", optional = true }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
 js-sys = "0.3.70"
@@ -376,3 +374,27 @@ edition = "2021"
 [workspace.dependencies]
 serde = { version = "1", features = ["serde_derive"] }
 mint = "0.5.6"
+
+[patch.crates-io]
+rustix = { git = "https://github.com/bytecodealliance/rustix" }
+softbuffer = { git = "https://github.com/jackpot51/softbuffer.git", branch = "redox-wayland" }
+# wayland-rs patches using git
+wayland-backend = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-client = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-cursor = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-egl = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-protocols = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-protocols-misc = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-protocols-wlr = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-server = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+wayland-sys = { git = "https://github.com/jackpot51/wayland-rs.git", branch = "redox" }
+# wayland-rs patches when using local changes
+#wayland-backend = { path = "../../wayland-rs/source/wayland-backend" }
+#wayland-client = { path = "../../wayland-rs/source/wayland-client" }
+#wayland-cursor = { path = "../../wayland-rs/source/wayland-cursor" }
+#wayland-egl = { path = "../../wayland-rs/source/wayland-egl" }
+#wayland-protocols = { path = "../../wayland-rs/source/wayland-protocols" }
+#wayland-protocols-misc = { path = "../../wayland-rs/source/wayland-protocols-misc" }
+#wayland-protocols-wlr = { path = "../../wayland-rs/source/wayland-protocols-wlr" }
+#wayland-server = { path = "../../wayland-rs/source/wayland-server" }
+#wayland-sys = { path = "../../wayland-rs/source/wayland-sys" }

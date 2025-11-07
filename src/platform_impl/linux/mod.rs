@@ -1042,3 +1042,9 @@ fn is_main_thread() -> bool {
 fn is_main_thread() -> bool {
     std::thread::current().name() == Some("main")
 }
+
+#[cfg(target_os = "redox")]
+fn is_main_thread() -> bool {
+    eprintln!("winit is_main_thread not implemented on Redox");
+    true
+}
